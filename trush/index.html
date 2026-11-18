@@ -61,8 +61,10 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <div class="question">
 <label for="bulkyName"><strong>品目名</strong></label>
 <input id="bulkyName" type="text" placeholder="例：じゅうたん、椅子、棚" style="width:100%;padding:12px;border:1px solid #cbd4ca;border-radius:10px;font-size:1rem;margin:6px 0 12px">
-<label for="bulkyPrice"><strong>収集料金（円）</strong></label>
+<label for="bulkyPrice"><strong>1個あたりの収集料金（円）</strong></label>
 <input id="bulkyPrice" type="number" min="1" step="100" placeholder="例：900" style="width:100%;padding:12px;border:1px solid #cbd4ca;border-radius:10px;font-size:1rem;margin:6px 0 12px">
+<label for="bulkyQuantity"><strong>数量</strong></label>
+<input id="bulkyQuantity" type="number" min="1" step="1" value="1" style="width:100%;padding:12px;border:1px solid #cbd4ca;border-radius:10px;font-size:1rem;margin:6px 0 12px">
 <button type="button" id="addBulkyItem">リストに追加</button>
 <p class="hint">※料金は粗大ごみ受付センターへの申込み後に案内された金額を入力してください。</p>
 </div>
@@ -180,24 +182,24 @@ function renderBulkyList(){
  const rows=document.getElementById('bulkyRows'),summary=document.getElementById('bulkySummary');
  if(!bulkyItems.length){rows.className='empty';rows.textContent='まだ品目が登録されていません。';summary.hidden=true;return}
  rows.className='';
- rows.innerHTML=bulkyItems.map((x,i)=>'<div class="result" style="margin-bottom:8px"><div class="result-top"><strong>'+x.name.replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))+'</strong><button type="button" data-remove="'+i+'" style="background:#66756d;padding:7px 10px">削除</button></div><p>収集料金：'+x.fee.toLocaleString('ja-JP')+'円</p></div>').join('');
+ rows.innerHTML=bulkyItems.map((x,i)=>'<div class="result" style="margin-bottom:8px"><div class="result-top"><strong>'+x.name.replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))+' × '+x.quantity+'個</strong><button type="button" data-remove="'+i+'" style="background:#66756d;padding:7px 10px">削除</button></div><p>1個 '+x.fee.toLocaleString('ja-JP')+'円 × '+x.quantity+'個 ＝ '+(x.fee*x.quantity).toLocaleString('ja-JP')+'円</p></div>').join('');
  rows.querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{bulkyItems.splice(Number(b.dataset.remove),1);renderBulkyList()}));
  let total=0,A=0,B=0,detail=[];
  bulkyItems.forEach(x=>{
-  total+=x.fee;
+  total+=x.fee*x.quantity;
   const combo=ticketCombo(x.fee);
-  if(combo){A+=combo.a;B+=combo.b;detail.push('<li>'+x.name+'：A券 '+combo.a+'枚／B券 '+combo.b+'枚</li>')}
-  else{detail.push('<li>'+x.name+'：この金額の券の組合せを計算できません。受付センターに確認してください。</li>')}
+  if(combo){A+=combo.a*x.quantity;B+=combo.b*x.quantity;detail.push('<li>'+x.name+' × '+x.quantity+'個：A券 '+(combo.a*x.quantity)+'枚／B券 '+(combo.b*x.quantity)+'枚</li>')}
+  else{detail.push('<li>'+x.name+'：1個あたりの金額の券の組合せを計算できません。受付センターに確認してください。</li>')}
  });
  summary.hidden=false;
  summary.innerHTML='<h3>必要な粗大ごみ処理券</h3><p><strong>収集料金の合計：</strong>'+total.toLocaleString('ja-JP')+'円</p><p><strong>A券（200円）：</strong>'+A+'枚</p><p><strong>B券（300円）：</strong>'+B+'枚</p><p><strong>処理券の合計：</strong>'+ (A+B)+'枚</p><p><strong>品目ごとの内訳</strong></p><ul>'+detail.join('')+'</ul><p class="hint">※品目ごとに料金分の処理券を貼る必要があります。申込時に案内された券種・枚数が最終的な確定情報です。</p>';
 }
 document.getElementById('addBulkyItem').addEventListener('click',()=>{
- const name=document.getElementById('bulkyName').value.trim(),raw=document.getElementById('bulkyPrice').value,fee=Number(raw);
- if(!name||raw===''||!Number.isInteger(fee)||fee<=0){alert('品目名と収集料金を入力してください。');return}
- if(!ticketCombo(fee)){alert('この金額はA券・B券の組合せで計算できません。受付センターに確認してください。');return}
- bulkyItems.push({name,fee});
- document.getElementById('bulkyName').value='';document.getElementById('bulkyPrice').value='';
+ const name=document.getElementById('bulkyName').value.trim(),raw=document.getElementById('bulkyPrice').value,fee=Number(raw),rawQty=document.getElementById('bulkyQuantity').value,quantity=Number(rawQty);
+ if(!name||raw===''||!Number.isInteger(fee)||fee<=0||rawQty===''||!Number.isInteger(quantity)||quantity<1){alert('品目名・1個あたりの収集料金・数量を正しく入力してください。');return}
+ if(!ticketCombo(fee)){alert('1個あたりの料金はA券・B券の組合せで計算できません。受付センターに確認してください。');return}
+ bulkyItems.push({name,fee,quantity});
+ document.getElementById('bulkyName').value='';document.getElementById('bulkyPrice').value='';document.getElementById('bulkyQuantity').value='1';
  renderBulkyList();
 });
 document.getElementById('clearBulkyList').addEventListener('click',()=>{bulkyItems=[];renderBulkyList()});
