@@ -78,6 +78,7 @@ let toyStep = 0;
 const toySteps = [
  {key:'plastic',title:'主な素材はプラスチックですか？',choices:[['yes','プラスチックだけでできている'],['no','木・布・金属など、ほかの素材もある'],['unknown','分からない']]},
  {key:'metal',title:'ねじ・磁石・金属部品・配線などは使われていますか？',choices:[['yes','使われている'],['no','使われていない'],['unknown','分からない']]},
+ {key:'otherMaterial',title:'プラスチック以外の主な素材は何ですか？',choices:[['burnable','木・紙・布など'],['other','その他・複合素材'],['unknown','分からない']]},
  {key:'battery',title:'電池や充電池を使うおもちゃですか？',choices:[['yes','使う'],['no','使わない'],['unknown','分からない']]},
  {key:'size',title:'一番長い辺はおおむね何cmですか？',choices:[['small','30cm未満'],['large','30cm以上'],['unknown','分からない']]}
 ];
@@ -85,7 +86,7 @@ function showToyQuestion(){
  const q=toySteps[toyStep], box=document.getElementById('toyQuestion');
  document.getElementById('toyAnswer').innerHTML='';
  box.innerHTML='<div class="question"><div class="step">質問 '+(toyStep+1)+' / '+toySteps.length+'</div><h3>'+q.title+'</h3><div class="choices">'+q.choices.map(c=>'<button type="button" data-answer="'+c[0]+'">'+c[1]+'</button>').join('')+'</div></div>';
- box.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{toyAnswers[q.key]=b.dataset.answer;if(toyStep<toySteps.length-1){toyStep++;showToyQuestion()}else{showToyResult()}}));
+ box.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{toyAnswers[q.key]=b.dataset.answer;if(q.key==='metal' && toyAnswers.plastic==='yes'){toyStep+=2}else{toyStep++}if(toyStep<toySteps.length){showToyQuestion()}else{showToyResult()}}));
  document.getElementById('toyBack').style.display=toyStep===0?'none':'inline-block';
 }
 function showToyResult(){
@@ -101,8 +102,10 @@ function showToyResult(){
    kind='不燃ごみ';how='金属部品・ねじ・磁石・配線などが使われているプラスチック製のおもちゃは、資源プラスチックでは回収できません。不燃ごみへ。';caution='最大辺がおおむね30cm以上なら粗大ごみです。';
  }else if(a.plastic==='yes'){
    kind='資源（製品プラスチック）';how='プラスチック素材だけでできていて、金属部品などが使われていないおもちゃは資源として出せます。中身の見える袋に入れてください。';caution='最大辺がおおむね30cm以上なら粗大ごみです。汚れが落ちないものは資源に出せません。';
+ }else if(a.otherMaterial==='burnable'){
+   kind='可燃ごみ';how='木・紙・布などが主な素材のおもちゃは可燃ごみです。';caution='金属などの部品は、できるだけ取り外してください。最大辺がおおむね30cm以上なら粗大ごみです。';
  }else{
-   kind='素材に応じて確認が必要';how='プラスチックだけでできていないおもちゃは、木・布などの素材や金属部品の有無によって分別が異なります。';caution='可燃ごみに出すものは、金属などをできるだけ外してください。迷う場合は板橋区の品目一覧で確認してください。';
+   kind='追加確認が必要';how='素材が特定できないため、この情報だけでは分別を確定できません。板橋区の分別品目一覧で品目ごとの扱いを確認してください。';caution='金属部品のあるプラスチック製品は資源プラスチックとして回収できず、不燃ごみです。';
  }
  document.getElementById('toyQuestion').innerHTML='<div class="step">質問 '+toySteps.length+' / '+toySteps.length+' ・回答完了</div>';
  document.getElementById('toyAnswer').innerHTML='<div class="answer"><h3>判定結果：'+kind+'</h3><p><strong>出し方：</strong>'+how+'</p><p><strong>注意：</strong>'+caution+'</p><p><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/shigen/1001856.html" target="_blank" rel="noopener">板橋区公式の分別品目一覧を確認する ↗</a></p></div>';
