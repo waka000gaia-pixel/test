@@ -33,20 +33,7 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <body>
 <header><div class="wrap"><div class="eyebrow">ITABASHI CITY · CLEANUP GUIDE</div><h1>おうちの片づけ、<br>ごみの分け方ナビ。</h1><p>捨てたいものの名前を入れると、板橋区での分け方・出し方を確認できます。</p></div></header>
 <main class="wrap">\n
-<section class="panel" id="collectionCalendar">
-<h2>板橋区 ごみ収集カレンダー</h2>
-<p class="hint">町名・丁目を選ぶと、収集曜日と今月の日付を表示します。成増一丁目を初期選択にしています。</p>
-<label for="areaSelect"><strong>お住まいの地域</strong></label>
-<select id="areaSelect" style="display:block;width:100%;margin:8px 0 14px;padding:13px;border:1px solid #cbd4ca;border-radius:11px;background:white;color:var(--ink);font-size:1rem">
-<option value="成増1丁目" selected>成増1丁目</option>
-<option value="成増2〜3丁目">成増2〜3丁目</option><option value="成増4〜5丁目">成増4〜5丁目</option>
-</select>
-<div id="areaSchedule" class="answer" aria-live="polite"></div>
-<div class="searchline" style="margin-top:14px"><input id="calendarMonth" type="month" value="2026-11" min="2026-04" max="2027-03" aria-label="表示する年月" style="flex:1;min-width:0;padding:12px;border:1px solid #cbd4ca;border-radius:11px"><button type="button" id="showCalendar">カレンダーを表示</button></div>
-<div id="calendarGrid" style="margin-top:14px" aria-live="polite"></div>
-<p class="hint">※令和8年度（2026年4月〜2027年3月）の曜日表です。収集日の朝8時までに出してください。集積所の看板と異なる場合は、清掃事務所に確認してください。</p>
-<p><a href="https://www.city.itabashi.tokyo.jp/_res/projects/default_project/_page_/001/038/152/r8/w02.pdf" target="_blank" rel="noopener">成増1丁目の板橋区公式カレンダー（PDF） ↗</a> ／ <a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/kaishu/1038152.html" target="_blank" rel="noopener">板橋区公式・地域別カレンダー一覧 ↗</a></p>
-</section>
+
 <section class="panel">
 <h2>何を捨てたいですか？</h2>
 <div class="searchline"><input id="query" type="search" placeholder="例：フライパン、段ボール、電池…" aria-label="捨てたいものを入力"><button id="searchBtn">分別方法を調べる</button></div>
@@ -117,7 +104,20 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <p><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/sodai/1001868.html" target="_blank" rel="noopener">板橋区公式：粗大ごみの申込み・出し方 ↗</a></p>
 <p class="hint">粗大ごみ受付センター：03-6747-9353（月〜土 8:00〜19:00、年末年始を除く）</p>
 </section>
-<footer>このページは板橋区の公開情報をもとにした簡易ガイドです。品目や状態によって扱いが異なる場合があります。迷ったときは必ず板橋区公式情報で最新のルールをご確認ください。<br>参照：板橋区「資源とごみの正しい分け方・出し方」（確認日：2026年11月18日）</footer>
+<section class="panel" id="collectionCalendar">
+<h2>板橋区 ごみ収集カレンダー</h2>
+<p class="hint">町名・丁目を選ぶと、収集曜日と今月の日付を表示します。成増一丁目を初期選択にしています。</p>
+<label for="areaSelect"><strong>お住まいの地域</strong></label>
+<select id="areaSelect" style="display:block;width:100%;margin:8px 0 14px;padding:13px;border:1px solid #cbd4ca;border-radius:11px;background:white;color:var(--ink);font-size:1rem">
+<option value="成増1丁目" selected>成増1丁目</option>
+<option value="成増2〜3丁目">成増2〜3丁目</option><option value="成増4〜5丁目">成増4〜5丁目</option>
+</select>
+<div id="areaSchedule" class="answer" aria-live="polite"></div>
+<div class="searchline" style="margin-top:14px"><input id="calendarMonth" type="month" value="2026-11" min="2026-04" max="2027-03" aria-label="表示する年月" style="flex:1;min-width:0;padding:12px;border:1px solid #cbd4ca;border-radius:11px"><button type="button" id="showCalendar">カレンダーを表示</button></div>
+<div id="calendarGrid" style="margin-top:14px" aria-live="polite"></div>
+<p class="hint">※令和8年度（2026年4月〜2027年3月）の曜日表です。収集日の朝8時までに出してください。集積所の看板と異なる場合は、清掃事務所に確認してください。</p>
+<p><a href="https://www.city.itabashi.tokyo.jp/_res/projects/default_project/_page_/001/038/152/r8/w02.pdf" target="_blank" rel="noopener">成増1丁目の板橋区公式カレンダー（PDF） ↗</a> ／ <a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/kaishu/1038152.html" target="_blank" rel="noopener">板橋区公式・地域別カレンダー一覧 ↗</a></p>
+</section>\n<footer>このページは板橋区の公開情報をもとにした簡易ガイドです。品目や状態によって扱いが異なる場合があります。迷ったときは必ず板橋区公式情報で最新のルールをご確認ください。<br>参照：板橋区「資源とごみの正しい分け方・出し方」（確認日：2026年11月18日）</footer>
 </main>
 <script>
 
