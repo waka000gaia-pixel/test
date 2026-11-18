@@ -81,7 +81,7 @@ const toySteps = [
  {key:'otherMaterial',title:'シールなどの付属品を除くと、おもちゃ本体の主な素材は何ですか？',choices:[['burnable','木・紙・布など'],['other','その他・複合素材'],['unknown','分からない']]},
  {key:'battery',title:'電池や充電池を使うおもちゃですか？',choices:[['yes','使う'],['no','使わない'],['unknown','分からない']]},
  {key:'size',title:'一番長い辺はおおむね何cmですか？',choices:[['small','30cm未満'],['large','30cm以上'],['unknown','分からない']]},
- {key:'attachments',title:'おもちゃにシールやマジックテープは付いていますか？',choices:[['none','どちらも付いていない'],['paper','紙製のシール'],['plastic','プラスチック製のシール'],['velcro','マジックテープ'],['both','シールとマジックテープ']]}
+ {key:'attachments',title:'おもちゃにプラスチック製のシールやマジックテープは付いていますか？',choices:[['none','どちらも付いていない'],['plastic','プラスチック製のシール'],['velcro','マジックテープ'],['both','プラスチック製のシールとマジックテープ']]}
 ];
 function showToyQuestion(){
  const q=toySteps[toyStep], box=document.getElementById('toyQuestion');
@@ -109,7 +109,7 @@ function showToyResult(){
    kind='追加確認が必要';how='素材が特定できないため、この情報だけでは分別を確定できません。板橋区の分別品目一覧で品目ごとの扱いを確認してください。';caution='金属部品のあるプラスチック製品は資源プラスチックとして回収できず、不燃ごみです。';
  }
  let attachmentNote='';
- if(a.attachments==='paper'||a.attachments==='both') attachmentNote+='紙製のシールは、はがせなければ付けたままでプラスチック資源として出せます。';
+ 
  if(a.attachments==='plastic') attachmentNote+='プラスチック製のシールは付けたままで構いません。';
  if(a.attachments==='velcro'||a.attachments==='both') attachmentNote+='マジックテープの扱いについては、板橋区から公式な発表はありません。';
  document.getElementById('toyQuestion').innerHTML='<div class="step">質問 '+toySteps.length+' / '+toySteps.length+' ・回答完了</div>';
