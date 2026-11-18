@@ -31,6 +31,13 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <div class="chips" aria-label="よく検索される品目"><button data-q="プラスチック">プラスチック</button><button data-q="段ボール">段ボール</button><button data-q="フライパン">フライパン</button><button data-q="電池">電池</button><button data-q="布団">布団</button><button data-q="スプレー缶">スプレー缶</button></div>
 </section>
 
+<section class="panel" id="materialGuide">
+<h2>材質から分別方法を調べる</h2>
+<p class="hint">「プラスチック」「木」「金属」など、材質を入力してください。大きさも選ぶと、分別区分を絞り込めます。</p>
+<div class="searchline"><input id="materialInput" type="search" placeholder="例：プラスチック、木、金属、ゴム…" aria-label="材質を入力"><select id="materialSize" aria-label="大きさ" style="min-width:145px;padding:12px;border:1px solid #cbd4ca;border-radius:11px;background:white;color:var(--ink)"><option value="small">30cm未満</option><option value="large">30cm以上</option><option value="unknown" selected>大きさ不明</option></select><button type="button" id="materialBtn">材質で調べる</button></div>
+<div id="materialResult" aria-live="polite" style="margin-top:12px"><div class="empty">材質を入力すると、板橋区の分別区分を表示します。</div></div>
+<p class="hint">※材質だけで分別が決まらない品目もあります。汚れ・金属部品・電池・品目固有のルールがある場合は、品目名でも検索してください。</p>
+</section>
 <section class="panel" id="toyFlow" hidden aria-live="polite">
 <h2>おもちゃの分別を確認しましょう</h2>
 <p class="hint">素材・部品・電池・大きさを順番に確認して、板橋区の分別方法を絞り込みます。</p>
@@ -89,6 +96,61 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <footer>このページは板橋区の公開情報をもとにした簡易ガイドです。品目や状態によって扱いが異なる場合があります。迷ったときは必ず板橋区公式情報で最新のルールをご確認ください。<br>参照：板橋区「資源とごみの正しい分け方・出し方」（確認日：2026年11月18日）</footer>
 </main>
 <script>
+
+const materialInput=document.getElementById('materialInput');
+function searchMaterial(){
+ const raw=materialInput.value.trim().toLowerCase();
+ const size=document.getElementById('materialSize').value;
+ const box=document.getElementById('materialResult');
+ if(!raw){box.innerHTML='<div class="empty">材質を入力してください。</div>';return}
+ let kind='',how='',caution='';
+ if(size==='large'){
+  kind='粗大ごみ（申込制・有料）';
+  how='最大辺がおおむね30cm以上のものは、材質にかかわらず原則として粗大ごみの対象です。';
+  caution='家電リサイクル法対象品目、パソコン、電池など例外があります。品目名でも検索してください。';
+ }else if(/プラスチック|プラ|ポリエチレン|ポリプロピレン|pvc|塩化ビニル/.test(raw)){
+  kind='資源（プラスチック）';
+  how='プラスチック素材だけでできているものは資源として回収します。容器包装プラスチック・製品プラスチックのどちらも対象です。';
+  caution='汚れが落ちないもの・在宅医療用プラスチックは可燃ごみ、金属や刃物を含むものは不燃ごみです。複数素材の製品は品目名でも確認してください。';
+ }else if(/紙|段ボール|ダンボール|新聞|雑誌/.test(raw)){
+  kind='資源（古紙）または可燃ごみ';
+  how='新聞・雑誌・段ボール・紙箱など資源対象の紙は資源です。';
+  caution='汚れた紙、においの付いた紙、防水加工紙、シールなど粘着物が付いた紙は可燃ごみです。紙製品の種類を確認してください。';
+ }else if(/木|木材|木製/.test(raw)){
+  kind='可燃ごみ';
+  how='木くずなどは可燃ごみです。';
+  caution='最大辺がおおむね30cm以上の家具・木製品などは粗大ごみになる場合があります。木箱など品目別の扱いもあるため、品目名で確認してください。';
+ }else if(/金属|鉄|アルミ|銅|ステンレス/.test(raw)){
+  kind='不燃ごみ';
+  how='金属製品は不燃ごみです。';
+  caution='最大辺がおおむね30cm以上のものは粗大ごみになる場合があります。スプレー缶・電池・刃物などは個別の出し方を確認してください。';
+ }else if(/ガラス|陶器|陶磁器|鏡/.test(raw)){
+  kind='不燃ごみ';
+  how='ガラス類・陶磁器類は不燃ごみです。';
+  caution='割れたものや鋭利なものは紙などに包み、袋に「キケン」と表示してください。飲料・食品用びんは資源です。';
+ }else if(/ゴム/.test(raw)){
+  kind='可燃ごみ';
+  how='ゴム製品は可燃ごみです。';
+  caution='複合素材のものや大きな製品は品目ごとの扱いを確認してください。';
+ }else if(/革|皮革/.test(raw)){
+  kind='可燃ごみ';
+  how='革製品は可燃ごみです。';
+  caution='金属部品などが付いている場合も、品目ごとの扱いを確認してください。';
+ }else if(/布|繊維|綿|ポリエステル|衣類/.test(raw)){
+  kind='可燃ごみ（衣類・布製品）';
+  how='衣類などの布製品は可燃ごみです。';
+  caution='資源回収の対象となる古布などの扱いは、地域の回収方法も確認してください。';
+ }else{
+  kind='この材質だけでは判定できません';
+  how='入力された材質に対応する分別区分を、この簡易ガイドでは確認できませんでした。';
+  caution='品目名で検索するか、板橋区公式の分別一覧を確認してください。';
+ }
+ if(size==='unknown')caution+=' 大きさが不明なため、30cm以上の場合は粗大ごみの可能性があります。';
+ box.innerHTML='<article class="result"><div class="result-top"><span class="kind">'+kind+'</span></div><p><strong>分別の目安：</strong>'+how+'</p><p class="hint"><strong>注意：</strong>'+caution+'</p><p><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/shigen/1001856.html" target="_blank" rel="noopener">板橋区公式：資源とごみの正しい分け方・出し方 ↗</a></p></article>';
+}
+document.getElementById('materialBtn').addEventListener('click',searchMaterial);
+materialInput.addEventListener('keydown',e=>{if(e.key==='Enter')searchMaterial()});
+
 const items=[
 {name:"プラスチック容器・包装",keys:["プラスチック","プラ","菓子袋","レトルト","弁当容器","卵パック","シャンプー","洗剤ボトル"],type:"資源",how:"汚れを拭き取るか軽くすすぎ、中身の見える袋に入れて出します。袋は二重にしません。",caution:"汚れが落ちないものは可燃ごみ、金属や刃物が付いたものは不燃ごみ。紙製のシール・ラベルは可能な範囲ではがすか切り取り、難しければ付けたままで出せます。"},
 {name:"製品プラスチック",keys:["ハンガー","cd","dvd","ポリバケツ","発泡スチロール","プラケース"],type:"資源",how:"プラスチック素材だけでできている製品は資源として回収します。中身の見える袋へ。",caution:"最大辺がおおむね30cm以上のものは粗大ごみ。紙製のシール・ラベルは可能な範囲ではがすか切り取り、難しければ付けたままで出せます。"},
