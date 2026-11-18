@@ -39,6 +39,22 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <div class="flow-actions"><button type="button" id="toyBack">ひとつ戻る</button><button type="button" id="toyRestart">最初から</button></div>
 </section>
 <section class="panel" aria-live="polite"><h2>分別結果</h2><div id="results"><div class="empty">品目を入力するか、上のボタンを押してください。</div></div></section>
+<section class="panel" id="bulkyFees">
+<h2>粗大ごみシールの料金を調べる</h2>
+<p>品目ごとの収集料金は、板橋区公式の一覧または料金検索で確認できます。</p>
+<div class="choices" style="margin:12px 0">
+<a href="https://www.city.itabashi.tokyo.jp/_res/projects/default_project/_page_/001/001/869/sodai260401.pdf" target="_blank" rel="noopener">板橋区粗大ごみ品目一覧（料金表PDF・2026年4月）↗</a>
+<a href="https://sodai-tokyo-ku2.remote-attend-e.com/" target="_blank" rel="noopener">板橋区粗大ごみAIチャットボットで品目検索 ↗</a>
+</div>
+<div class="question">
+<h3>持込みの場合の料金を計算</h3>
+<p class="hint">収集料金の合計を入力すると、持込み料金（半額・100円未満切捨て）を計算します。</p>
+<div class="searchline"><input id="collectionFee" type="number" min="0" step="100" placeholder="例：900（円）" aria-label="収集料金の合計"><button type="button" id="feeCalc">持込み料金を計算</button></div>
+<p id="feeResult" aria-live="polite" class="hint">※持込みも事前申込みが必要です。持込みできるのは板橋区民です。</p>
+</div>
+<p class="hint">収集時の処理券の組合せ：400円＝A券2枚／900円＝B券3枚／1,300円＝A券2枚＋B券3枚／2,300円＝A券1枚＋B券7枚／3,200円＝A券1枚＋B券10枚。申込み後、受付センターで案内された金額・枚数を確認してから処理券を購入してください。</p>
+<p><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/sodai/1001869.html" target="_blank" rel="noopener">板橋区公式：粗大ごみ処理手数料 ↗</a></p>
+</section>
 <section class="panel"><h2>まずは4つの区分をチェック</h2><div class="grid">
 <div class="category"><strong>♻️ 資源（週1回）</strong><p>プラスチック、古紙、びん、缶、ペットボトルなど。種類ごとに分けて出します。</p></div>
 <div class="category"><strong>🗑️ 可燃ごみ（週3回）</strong><p>生ごみ、資源に出せない紙、汚れの落ちないプラスチック、衣類など。</p></div>
@@ -69,7 +85,7 @@ const items=[
 {name:"ライター",keys:["ライター"],type:"不燃ごみ",how:"使い切り、別袋に入れて「ライター」と表示します。",caution:"他の不燃ごみと分けて出してください。"},
 {name:"電池",keys:["電池","乾電池","コイン電池","ボタン電池","リチウム"],type:"種類により異なります",how:"乾電池・コイン電池（CR・BR）は不燃ごみ。小型充電式電池やその他の電池は回収方法が異なります。",caution:"リチウムイオン電池など充電式電池は通常のごみに混ぜないでください。板橋区公式の「電池の処分方法」を確認してください。"},
 {name:"蛍光灯・電球",keys:["蛍光灯","蛍光管","電球"],type:"不燃ごみ",how:"購入時のケースなどに入れて出します。",caution:"水銀を含むものの出し方は区の最新案内も確認してください。"},
-{name:"じゅうたん・カーペット",keys:["じゅうたん","絨毯","カーペット","ホットカーペット","ラグ"],type:"粗大ごみ（申込制・有料）",how:"板橋区では粗大ごみです。粗大ごみ受付センターに「敷物・ホットカーペット」として事前に申し込んでください。",caution:"小さく裁断しても粗大ごみ扱いです。収集・持込みのどちらも事前申込みが必要です。"},
+{name:"じゅうたん・カーペット",keys:["じゅうたん","絨毯","カーペット","ホットカーペット","ラグ"],type:"粗大ごみ（申込制・有料）",how:"板橋区では粗大ごみです。「敷物・ホットカーペット」として申し込みます。1畳以下は収集400円、1畳を超えるものは収集900円です。",caution:"小さく裁断しても粗大ごみ扱いです。持込み料金は収集料金の半額（100円未満切捨て）。収集・持込みとも事前申込みが必要です。料金は品目・大きさで異なるため、申込時に確定してください。"},
 {name:"布団・家具・大型家電",keys:["布団","ふとん","ベッド","マットレス","タンス","たんす","机","椅子","いす","棚","ソファ","電子レンジ","掃除機"],type:"粗大ごみ（申込制・有料）",how:"最大辺がおおむね30cm以上のものは粗大ごみです。収集または持込みを事前に申し込みます。",caution:"解体・分解しても粗大ごみです。テレビ・エアコン・冷蔵庫・冷凍庫・洗濯機・衣類乾燥機、パソコンは別制度です。"}
 ];
 const input=document.getElementById('query'),out=document.getElementById('results');
@@ -132,6 +148,14 @@ function search(){
  if(!found.length){out.innerHTML='<div class="empty">この品目は簡易ガイドに見つかりませんでした。素材や大きさによって分別が異なります。<br><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/shigen/1001856.html" target="_blank" rel="noopener">板橋区公式の分別一覧で確認する ↗</a></div>';return}
  out.innerHTML=found.map(x=>'<article class="result"><div class="result-top"><span class="kind">'+x.type+'</span></div><h3>'+x.name+'</h3><p><strong>出し方：</strong>'+x.how+'</p><p class="hint"><strong>注意：</strong>'+x.caution+'</p></article>').join('')
 }
+document.getElementById('feeCalc').addEventListener('click',()=>{
+ const raw=document.getElementById('collectionFee').value;
+ const fee=Number(raw);
+ const result=document.getElementById('feeResult');
+ if(raw===''||!Number.isFinite(fee)||fee<0){result.textContent='収集料金の合計を円単位で入力してください。';return}
+ const carry=Math.floor((fee/2)/100)*100;
+ result.textContent='持込み料金の目安：'+carry.toLocaleString('ja-JP')+'円（収集料金 '+fee.toLocaleString('ja-JP')+'円の半額、100円未満切捨て）';
+});
 document.getElementById('searchBtn').addEventListener('click',search);
 input.addEventListener('keydown',e=>{if(e.key==='Enter')search()});
 document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.q;search()}));
