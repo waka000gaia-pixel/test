@@ -156,7 +156,8 @@ function renderCalendar(){
 areaSelect.addEventListener('change',renderAreaCalendar);
 document.getElementById('showCalendar').addEventListener('click',renderCalendar);
 renderAreaCalendar();
-\nconst materialInput=document.getElementById('materialInput');
+
+const materialInput=document.getElementById('materialInput');
 function searchMaterial(){
  const raw=materialInput.value.trim().toLowerCase();
  const size=document.getElementById('materialSize').value;
