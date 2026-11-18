@@ -76,9 +76,9 @@ const input=document.getElementById('query'),out=document.getElementById('result
 let toyAnswers = {};
 let toyStep = 0;
 const toySteps = [
- {key:'plastic',title:'おもちゃ本体の主な素材は何ですか？',choices:[['yes','プラスチック（紙製シールなどが付いていても）'],['no','木・紙・布など、プラスチック以外が主な素材'],['unknown','分からない']]},
+ {key:'plastic',title:'シールやマジックテープを除いた「おもちゃ本体」は、何でできていますか？',choices:[['yes','本体はプラスチック製（紙シールが付いていてもこちら）'],['no','本体は木・紙・布などが主な素材'],['unknown','本体の素材が分からない']]},
  {key:'metal',title:'ねじ・磁石・金属部品・配線などは使われていますか？',choices:[['yes','使われている'],['no','使われていない'],['unknown','分からない']]},
- {key:'otherMaterial',title:'プラスチック以外の主な素材は何ですか？',choices:[['burnable','木・紙・布など'],['other','その他・複合素材'],['unknown','分からない']]},
+ {key:'otherMaterial',title:'シールなどの付属品を除くと、おもちゃ本体の主な素材は何ですか？',choices:[['burnable','木・紙・布など'],['other','その他・複合素材'],['unknown','分からない']]},
  {key:'battery',title:'電池や充電池を使うおもちゃですか？',choices:[['yes','使う'],['no','使わない'],['unknown','分からない']]},
  {key:'size',title:'一番長い辺はおおむね何cmですか？',choices:[['small','30cm未満'],['large','30cm以上'],['unknown','分からない']]},
  {key:'attachments',title:'おもちゃにシールやマジックテープは付いていますか？',choices:[['none','どちらも付いていない'],['paper','紙製のシール'],['plastic','プラスチック製のシール'],['velcro','マジックテープ'],['both','シールとマジックテープ']]}
