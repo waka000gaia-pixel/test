@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f3ed">
+<title>板橋区 ごみ分別ガイド｜おうちの片づけナビ</title>
+<style>
+:root{--ink:#26352f;--muted:#66756d;--paper:#f5f3ed;--card:#fffefa;--green:#315e4b;--line:#e4e5dc;--orange:#e9a45b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.7}
+header{padding:42px 20px 34px;background:#e8eee5;border-bottom:1px solid #dce4da}.wrap{max-width:920px;margin:auto} .eyebrow{font-size:.78rem;letter-spacing:.13em;color:var(--green);font-weight:700}
+h1{font-size:clamp(1.8rem,6vw,3rem);line-height:1.25;margin:10px 0;color:#244635}header p{margin:0;color:#53665b}
+main{padding:24px 16px 60px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin:0 0 18px;box-shadow:0 5px 20px #293b3010}
+h2{font-size:1.2rem;margin:0 0 12px}.searchline{display:flex;gap:9px}input[type=search]{min-width:0;flex:1;padding:14px 15px;border:1px solid #cbd4ca;border-radius:11px;font-size:1rem;background:white;color:var(--ink)}
+button{border:0;border-radius:11px;padding:12px 17px;background:var(--green);color:white;font-size:.95rem;font-weight:700;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #e9a45b;outline-offset:2px}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.chips button{background:#edf2eb;color:#315e4b;padding:7px 12px;font-size:.85rem}
+#results{display:grid;gap:12px}.result{border:1px solid var(--line);border-radius:13px;padding:16px;background:white}.result-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.kind{font-size:.8rem;font-weight:700;padding:4px 9px;border-radius:99px;background:#eaf0e8;color:#315e4b}.result h3{margin:7px 0 4px;font-size:1.08rem}.result p{margin:5px 0;color:#526158}.hint{font-size:.88rem;color:var(--muted)}.empty{padding:18px;background:#f7f7f1;border-radius:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.category{padding:15px;border:1px solid var(--line);border-radius:13px;background:white}.category strong{display:block;margin-bottom:5px}.category p{font-size:.9rem;color:#59675f;margin:0}
+.note{background:#fff5e8;border-left:4px solid var(--orange);padding:13px 15px;border-radius:8px;font-size:.92rem}
+a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--muted);padding:8px 2px}
+@media(max-width:560px){header{padding:32px 18px 27px}.panel{padding:17px}.searchline{flex-direction:column}.searchline button{width:100%}.grid{grid-template-columns:1fr}.result-top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">ITABASHI CITY · CLEANUP GUIDE</div><h1>おうちの片づけ、<br>ごみの分け方ナビ。</h1><p>捨てたいものの名前を入れると、板橋区での分け方・出し方を確認できます。</p></div></header>
+<main class="wrap">
+<section class="panel">
+<h2>何を捨てたいですか？</h2>
+<div class="searchline"><input id="query" type="search" placeholder="例：フライパン、段ボール、電池…" aria-label="捨てたいものを入力"><button id="searchBtn">分別方法を調べる</button></div>
+<div class="chips" aria-label="よく検索される品目"><button data-q="プラスチック">プラスチック</button><button data-q="段ボール">段ボール</button><button data-q="フライパン">フライパン</button><button data-q="電池">電池</button><button data-q="布団">布団</button><button data-q="スプレー缶">スプレー缶</button></div>
+</section>
+<section class="panel" aria-live="polite"><h2>分別結果</h2><div id="results"><div class="empty">品目を入力するか、上のボタンを押してください。</div></div></section>
+<section class="panel"><h2>まずは4つの区分をチェック</h2><div class="grid">
+<div class="category"><strong>♻️ 資源（週1回）</strong><p>プラスチック、古紙、びん、缶、ペットボトルなど。種類ごとに分けて出します。</p></div>
+<div class="category"><strong>🗑️ 可燃ごみ（週3回）</strong><p>生ごみ、資源に出せない紙、汚れの落ちないプラスチック、衣類など。</p></div>
+<div class="category"><strong>🔩 不燃ごみ（月2回）</strong><p>金属・ガラス・陶磁器、小型家電など。刃物やスプレー缶は表示方法に注意。</p></div>
+<div class="category"><strong>🪑 粗大ごみ（申込制・有料）</strong><p>最大辺がおおむね30cm以上の家具・寝具・電化製品など。解体しても粗大ごみです。</p></div>
+</div></section>
+<section class="panel"><h2>出す前に確認したいこと</h2>
+<p class="note">資源・可燃・不燃ごみは、収集日当日の朝8時までに決められた集積所へ。収集曜日は地域によって異なるため、住所の地域別曜日表で確認してください。</p>
+<ul><li>資源プラスチックは汚れを落として、中身の見える袋へ。袋は二重にしません。</li><li>可燃・不燃ごみも、中身の見える袋またはふた付き容器で出します。</li><li>粗大ごみは集積所に出せません。収集・持込みのどちらも事前申込みが必要です。</li></ul>
+<p><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/shigen/1001856.html" target="_blank" rel="noopener">板橋区公式：資源とごみの正しい分け方・出し方 ↗</a></p>
+<p><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/sodai/1001868.html" target="_blank" rel="noopener">板橋区公式：粗大ごみの申込み・出し方 ↗</a></p>
+<p class="hint">粗大ごみ受付センター：03-6747-9353（月〜土 8:00〜19:00、年末年始を除く）</p>
+</section>
+<footer>このページは板橋区の公開情報をもとにした簡易ガイドです。品目や状態によって扱いが異なる場合があります。迷ったときは必ず板橋区公式情報で最新のルールをご確認ください。<br>参照：板橋区「資源とごみの正しい分け方・出し方」（確認日：2026年11月18日）</footer>
+</main>
+<script>
+const items=[
+{name:"プラスチック容器・包装",keys:["プラスチック","プラ","菓子袋","レトルト","弁当容器","卵パック","シャンプー","洗剤ボトル"],type:"資源",how:"汚れを拭き取るか軽くすすぎ、中身の見える袋に入れて出します。袋は二重にしません。",caution:"汚れが落ちないものは可燃ごみ、金属や刃物が付いたものは不燃ごみ。"},
+{name:"製品プラスチック",keys:["ハンガー","cd","dvd","ポリバケツ","発泡スチロール","プラケース"],type:"資源",how:"プラスチック素材だけでできている製品は資源として回収します。中身の見える袋へ。",caution:"最大辺がおおむね30cm以上のものは粗大ごみ。"},
+{name:"新聞・雑誌・段ボール",keys:["新聞","雑誌","本","段ボール","ダンボール","ボール紙"],type:"資源（古紙）",how:"種類ごとに分け、複数ある場合は種類別にひもで十字に縛って出します。",caution:"汚れた紙や資源に出せない紙は可燃ごみ。"},
+{name:"びん・缶",keys:["びん","瓶","缶","空き缶","空きびん"],type:"資源",how:"飲料・食品用に限ります。中をすすぎ、びんは黄色、缶は青色の専用回収コンテナへ。",caution:"飲料・食品用以外のものは公式案内で確認してください。"},
+{name:"ペットボトル",keys:["ペットボトル","pet"],type:"資源",how:"キャップとラベルを外し、中をすすいで、専用回収ネットまたはコンテナへ。キャップ・ラベルはプラスチック資源です。",caution:"食用油のペットボトルは資源回収対象外で、可燃ごみです。"},
+{name:"生ごみ・汚れた紙",keys:["生ごみ","食品くず","ティッシュ","紙くず","汚れた紙"],type:"可燃ごみ",how:"水気をよく切り、中身の見える袋またはふた付き容器へ。袋の口を結んで出します。",caution:"段ボールや紙袋に入れて出さないでください。"},
+{name:"衣類・革製品・ゴム製品",keys:["衣類","服","靴","かばん","バッグ","ゴム手袋","ゴムボール"],type:"可燃ごみ",how:"中身の見える袋またはふた付き容器に入れて出します。",caution:"資源回収の対象となる衣類等の回収拠点がある場合は区の案内も確認してください。"},
+{name:"フライパン・なべ・金属類",keys:["フライパン","鍋","なべ","かま","金属","包丁","刃物","針"],type:"不燃ごみ",how:"中身の見える袋またはふた付き容器で出します。",caution:"針・刃物は紙などに包み、袋に「キケン」と表示してください。"},
+{name:"ガラス・陶磁器",keys:["ガラス","コップ","茶碗","ちゃわん","湯のみ","陶器","皿","鏡"],type:"不燃ごみ",how:"中身の見える袋またはふた付き容器で出します。",caution:"割れたガラスなど鋭利なものは紙などに包み、袋に「キケン」と表示してください。"},
+{name:"スプレー缶・カセットボンベ",keys:["スプレー缶","カセットボンベ","ガス缶"],type:"不燃ごみ",how:"中身を使い切り、別の袋に入れ、「スプレー缶」または「カセットボンベ」と表示します。",caution:"穴あけは危険なため不要です。"},
+{name:"ライター",keys:["ライター"],type:"不燃ごみ",how:"使い切り、別袋に入れて「ライター」と表示します。",caution:"他の不燃ごみと分けて出してください。"},
+{name:"電池",keys:["電池","乾電池","コイン電池","ボタン電池","リチウム"],type:"種類により異なります",how:"乾電池・コイン電池（CR・BR）は不燃ごみ。小型充電式電池やその他の電池は回収方法が異なります。",caution:"リチウムイオン電池など充電式電池は通常のごみに混ぜないでください。板橋区公式の「電池の処分方法」を確認してください。"},
+{name:"蛍光灯・電球",keys:["蛍光灯","蛍光管","電球"],type:"不燃ごみ",how:"購入時のケースなどに入れて出します。",caution:"水銀を含むものの出し方は区の最新案内も確認してください。"},
+{name:"布団・家具・大型家電",keys:["布団","ふとん","ベッド","マットレス","タンス","たんす","机","椅子","いす","棚","ソファ","電子レンジ","掃除機"],type:"粗大ごみ（申込制・有料）",how:"最大辺がおおむね30cm以上のものは粗大ごみです。収集または持込みを事前に申し込みます。",caution:"解体・分解しても粗大ごみです。テレビ・エアコン・冷蔵庫・冷凍庫・洗濯機・衣類乾燥機、パソコンは別制度です。"}
+];
+const input=document.getElementById('query'),out=document.getElementById('results');
+function search(){const q=input.value.trim().toLowerCase();if(!q){out.innerHTML='<div class="empty">品目名を入力してください。</div>';return}
+const found=items.filter(x=>x.name.toLowerCase().includes(q)||x.keys.some(k=>k.toLowerCase().includes(q)));
+if(!found.length){out.innerHTML='<div class="empty">この品目は簡易ガイドに見つかりませんでした。素材や大きさによって分別が異なります。<br><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/shigen/1001856.html" target="_blank" rel="noopener">板橋区公式の分別一覧で確認する ↗</a></div>';return}
+out.innerHTML=found.map(x=>'<article class="result"><div class="result-top"><span class="kind">'+x.type+'</span></div><h3>'+x.name+'</h3><p><strong>出し方：</strong>'+x.how+'</p><p class="hint"><strong>注意：</strong>'+x.caution+'</p></article>').join('')}
+document.getElementById('searchBtn').addEventListener('click',search);
+input.addEventListener('keydown',e=>{if(e.key==='Enter')search()});
+document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.q;search()}));
+</script>
+</body></html>
