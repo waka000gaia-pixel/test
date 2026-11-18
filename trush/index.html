@@ -80,7 +80,8 @@ const toySteps = [
  {key:'metal',title:'ねじ・磁石・金属部品・配線などは使われていますか？',choices:[['yes','使われている'],['no','使われていない'],['unknown','分からない']]},
  {key:'otherMaterial',title:'プラスチック以外の主な素材は何ですか？',choices:[['burnable','木・紙・布など'],['other','その他・複合素材'],['unknown','分からない']]},
  {key:'battery',title:'電池や充電池を使うおもちゃですか？',choices:[['yes','使う'],['no','使わない'],['unknown','分からない']]},
- {key:'size',title:'一番長い辺はおおむね何cmですか？',choices:[['small','30cm未満'],['large','30cm以上'],['unknown','分からない']]}
+ {key:'size',title:'一番長い辺はおおむね何cmですか？',choices:[['small','30cm未満'],['large','30cm以上'],['unknown','分からない']]},
+ {key:'attachments',title:'おもちゃにシールやマジックテープは付いていますか？',choices:[['none','どちらも付いていない'],['paper','紙製のシール'],['plastic','プラスチック製のシール'],['velcro','マジックテープ'],['both','シールとマジックテープ']]}
 ];
 function showToyQuestion(){
  const q=toySteps[toyStep], box=document.getElementById('toyQuestion');
@@ -107,8 +108,12 @@ function showToyResult(){
  }else{
    kind='追加確認が必要';how='素材が特定できないため、この情報だけでは分別を確定できません。板橋区の分別品目一覧で品目ごとの扱いを確認してください。';caution='金属部品のあるプラスチック製品は資源プラスチックとして回収できず、不燃ごみです。';
  }
+ let attachmentNote='';
+ if(a.attachments==='paper'||a.attachments==='both') attachmentNote+='紙製のシールは、可能な範囲ではがすか切り取ってください。難しい場合は付けたままでプラスチック資源として出せます。';
+ if(a.attachments==='plastic') attachmentNote+='プラスチック製のシールは、付けたままで構いません。';
+ if(a.attachments==='velcro'||a.attachments==='both') attachmentNote+='マジックテープについては、板橋区の公式案内に個別の扱いが記載されていません。付けたままで資源に出せるとは確認できないため、取り外せる場合は外し、素材が混在して判断に迷う場合は区に確認してください。';
  document.getElementById('toyQuestion').innerHTML='<div class="step">質問 '+toySteps.length+' / '+toySteps.length+' ・回答完了</div>';
- document.getElementById('toyAnswer').innerHTML='<div class="answer"><h3>判定結果：'+kind+'</h3><p><strong>出し方：</strong>'+how+'</p><p><strong>注意：</strong>'+caution+'</p><p><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/shigen/1001856.html" target="_blank" rel="noopener">板橋区公式の分別品目一覧を確認する ↗</a></p></div>';
+ document.getElementById('toyAnswer').innerHTML='<div class="answer"><h3>判定結果：'+kind+'</h3><p><strong>出し方：</strong>'+how+'</p><p><strong>注意：</strong>'+caution+'</p>'+(attachmentNote?'<p><strong>シール・マジックテープ：</strong>'+attachmentNote+'</p>':'')+'<p><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/shigen/1001856.html" target="_blank" rel="noopener">板橋区公式の分別品目一覧を確認する ↗</a></p></div>';
  document.getElementById('toyBack').style.display='inline-block';
 }
 function resetToy(){toyAnswers={};toyStep=0;showToyQuestion()}
