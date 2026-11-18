@@ -76,7 +76,7 @@ const input=document.getElementById('query'),out=document.getElementById('result
 let toyAnswers = {};
 let toyStep = 0;
 const toySteps = [
- {key:'plastic',title:'主な素材はプラスチックですか？',choices:[['yes','プラスチックだけでできている'],['no','木・布・金属など、ほかの素材もある'],['unknown','分からない']]},
+ {key:'plastic',title:'おもちゃ本体の主な素材は何ですか？',choices:[['yes','プラスチック（紙製シールなどが付いていても）'],['no','木・紙・布など、プラスチック以外が主な素材'],['unknown','分からない']]},
  {key:'metal',title:'ねじ・磁石・金属部品・配線などは使われていますか？',choices:[['yes','使われている'],['no','使われていない'],['unknown','分からない']]},
  {key:'otherMaterial',title:'プラスチック以外の主な素材は何ですか？',choices:[['burnable','木・紙・布など'],['other','その他・複合素材'],['unknown','分からない']]},
  {key:'battery',title:'電池や充電池を使うおもちゃですか？',choices:[['yes','使う'],['no','使わない'],['unknown','分からない']]},
@@ -87,7 +87,7 @@ function showToyQuestion(){
  const q=toySteps[toyStep], box=document.getElementById('toyQuestion');
  document.getElementById('toyAnswer').innerHTML='';
  box.innerHTML='<div class="question"><div class="step">質問 '+(toyStep+1)+' / '+toySteps.length+'</div><h3>'+q.title+'</h3><div class="choices">'+q.choices.map(c=>'<button type="button" data-answer="'+c[0]+'">'+c[1]+'</button>').join('')+'</div></div>';
- box.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{toyAnswers[q.key]=b.dataset.answer;toyStep++;if(toyStep<toySteps.length){showToyQuestion()}else{showToyResult()}}));
+ box.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{toyAnswers[q.key]=b.dataset.answer;if(q.key==='metal' && toyAnswers.plastic==='yes'){toyStep+=2}else{toyStep++}if(toyStep<toySteps.length){showToyQuestion()}else{showToyResult()}}));
  document.getElementById('toyBack').style.display=toyStep===0?'none':'inline-block';
 }
 function showToyResult(){
