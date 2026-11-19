@@ -46,7 +46,7 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <section class="panel" id="materialGuide">
 <h2>材質から分別方法を調べる</h2>
 <p class="hint">「プラスチック」「木材」「金属」「複合素材（紙＋鉄・アルミなど）」のように材質を入力してください。大きさも選ぶと、分別区分を絞り込めます。</p>
-<div class="searchline"><input id="materialInput" type="search" placeholder="例：木材、紙＋鉄、プラスチック…" aria-label="材質を入力"><select id="materialSize" aria-label="大きさ" style="min-width:145px;padding:12px;border:1px solid #cbd4ca;border-radius:11px;background:white;color:var(--ink)"><option value="small" selected>30cm未満</option><option value="large">30cm以上</option><option value="unknown">大きさ不明</option></select><button type="button" id="materialBtn">材質で調べる</button></div>
+<div class="searchline"><input id="materialInput" type="search" placeholder="例：木材、紙＋鉄、紙＋不明、プラスチック…" aria-label="材質を入力"><select id="materialSize" aria-label="大きさ" style="min-width:145px;padding:12px;border:1px solid #cbd4ca;border-radius:11px;background:white;color:var(--ink)"><option value="small" selected>30cm未満</option><option value="large">30cm以上</option><option value="unknown">大きさ不明</option></select><button type="button" id="materialBtn">材質で調べる</button></div>
 <div id="materialResult" aria-live="polite" style="margin-top:12px"><div class="empty">材質を入力すると、板橋区の分別区分を表示します。</div></div>
 <p class="hint">※材質だけで分別が決まらない品目もあります。汚れ・金属部品・電池・品目固有のルールがある場合は、品目名でも検索してください。</p>
 </section>
@@ -171,10 +171,10 @@ function searchMaterial(){
   kind='粗大ごみ（申込制・有料）';
   how='最大辺がおおむね30cm以上のものは、材質にかかわらず原則として粗大ごみの対象です。';
   caution='家電リサイクル法対象品目、パソコン、電池など例外があります。品目名でも検索してください。';
- }else if(/複合|\+|＋|混合|紙.*(鉄|金属|アルミ)|(鉄|金属|アルミ).*紙/.test(raw)){
+ }else if(/複合|\+|＋|混合|不明|わからない|分からない|何か|不詳|紙.*(鉄|金属|アルミ)|(鉄|金属|アルミ).*紙/.test(raw)){
   kind='複合素材：品目と構造の確認が必要';
-  how='紙と鉄・アルミなど、複数の素材が組み合わさったものは、材質名だけでは分別を確定できません。';
-  caution='素材ごとに分解できる場合は、分解した各部分を材質別に調べてください。分解できない場合は、品目名（例：ケース、筒型ケース）でも検索し、板橋区の公式案内で個別の扱いを確認してください。';
+  how='紙と別の素材が組み合わさっている場合や、もう一方の素材が分からない場合は、材質名だけでは分別を確定できません。';
+  caution='入力例：「紙＋不明」「紙と何か」。素材ごとに分解できる場合は、分解した各部分を材質別に調べてください。分解できない場合や素材が分からない場合は、品目名（例：入れ物、ケース、筒型ケース）でも検索し、板橋区の公式案内で個別の扱いを確認してください。';
  }else if(/プラスチック|プラ|ポリエチレン|ポリプロピレン|pvc|塩化ビニル/.test(raw)){
   kind='資源（プラスチック）';
   how='プラスチック素材だけでできているものは資源として回収します。容器包装プラスチック・製品プラスチックのどちらも対象です。';
@@ -313,7 +313,7 @@ function search(){
  }
  flow.hidden=true;
  if(!q){out.innerHTML='<div class="empty">品目名を入力してください。</div>';return}
- let found=items.filter(x=>x.name.toLowerCase().includes(q)||x.keys.some(k=>k.toLowerCase().includes(q)));
+ let found=q==='入れ物'?[items.find(x=>x.keys.includes('入れ物'))].filter(Boolean):items.filter(x=>x.name.toLowerCase().includes(q)||x.keys.some(k=>k.toLowerCase().includes(q)));
  if(/紙ラベル|ラベル/.test(q)){const labelItem=found.find(x=>x.name==='瓶の紙ラベル');if(labelItem)found=[labelItem]}
  if(!found.length){out.innerHTML='<div class="empty">この品目は簡易ガイドに見つかりませんでした。素材や大きさによって分別が異なります。<br><a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/shigen/1001856.html" target="_blank" rel="noopener">板橋区公式の分別一覧で確認する ↗</a></div>';return}
  out.innerHTML=found.map(x=>'<article class="result"><div class="result-top"><span class="kind">'+x.type+'</span></div><h3>'+x.name+'</h3><p><strong>出し方：</strong>'+x.how+'</p><p class="hint"><strong>注意：</strong>'+x.caution+'</p></article>').join('')
