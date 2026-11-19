@@ -38,7 +38,7 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <section class="panel">
 <h2>何を捨てたいですか？</h2>
 <div class="searchline"><input id="query" type="search" placeholder="例：フライパン、段ボール、電池…" aria-label="捨てたいものを入力"><button id="searchBtn">分別方法を調べる</button></div>
-<div class="chips" aria-label="よく検索される品目"><button data-q="ケース">ケース</button><button data-q="プラスチック">プラスチック</button><button data-q="段ボール">段ボール</button><button data-q="フライパン">フライパン</button><button data-q="電池">電池</button><button data-q="布団">布団</button><button data-q="スプレー缶">スプレー缶</button><button data-q="化粧品">化粧品</button><button data-q="ドーラン">ドーラン</button></div>
+<div class="chips" aria-label="よく検索される品目"><button data-q="入れ物">入れ物</button><button data-q="ケース">ケース</button><button data-q="プラスチック">プラスチック</button><button data-q="段ボール">段ボール</button><button data-q="フライパン">フライパン</button><button data-q="電池">電池</button><button data-q="布団">布団</button><button data-q="スプレー缶">スプレー缶</button><button data-q="化粧品">化粧品</button><button data-q="ドーラン">ドーラン</button></div>
 </section>
 
 <section class="panel" aria-live="polite"><h2>分別結果</h2><div id="results"><div class="empty">品目を入力するか、上のボタンを押してください。</div></div></section>
@@ -223,6 +223,7 @@ document.getElementById('materialBtn').addEventListener('click',searchMaterial);
 materialInput.addEventListener('keydown',e=>{if(e.key==='Enter')searchMaterial()});
 
 const items=[
+{name:"入れ物（材質・形状を確認）",keys:["入れ物"],type:"材質・形状によって異なります",how:"入れ物は、紙・プラスチック・金属・木材など、素材や形によって分別が異なります。材質が分かる場合は「材質から調べる」で確認してください。",caution:"複数の素材が組み合わさっている場合は、分解できるかどうかも確認してください。材質や形状が分からない場合は、板橋区公式の分別案内で個別の扱いを確認してください。"},
 {name:"ケース（材質・構造を確認）",keys:["ケース","筒型ケース","ボトルケース","収納ケース","ギフトケース","化粧箱","瓶を入れるケース"],type:"材質・構造によって異なります",how:"ケースは、紙・プラスチック・金属・木材など、素材や組み合わさり方によって分別が異なります。「材質から分別方法を調べる」で素材を入力してください。",caution:"紙と金属（鉄・アルミ）などの複合素材は、分解できるかどうかも確認してください。材質だけで判断できない場合は、板橋区公式の分別案内で品目ごとの扱いを確認してください。"},
 {name:"パソコン・ディスプレイ",keys:["パソコン","PC","pc","ノートパソコン","ノートpc","デスクトップパソコン","デスクトップpc","パソコン本体","パソコン用ディスプレイ","pcディスプレイ","モニター","液晶ディスプレイ"],type:"区では回収しません（メーカー回収・宅配便回収）",how:"家庭用パソコン本体・ノートパソコン・ディスプレイは、板橋区では回収していません。①宅配便による回収（リネットジャパンリサイクル）または②各パソコンメーカーによる回収を利用してください。宅配便回収は、パソコン本体を含む1箱分が無料です（3辺合計140cm以内・重量20kg以下）。",caution:'PCリサイクルマークの有無でメーカー回収の料金が異なります。メーカーがない・不明なパソコンや自作パソコンは、一般社団法人パソコン3R推進協会へお問い合わせください。回収前にデータを消去してください。<a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/kaden/1001876.html" target="_blank" rel="noopener">板橋区公式：パソコンリサイクルについて ↗</a>'},
 
