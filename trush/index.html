@@ -38,15 +38,15 @@ a{color:#285d48;text-underline-offset:3px}footer{font-size:.82rem;color:var(--mu
 <section class="panel">
 <h2>何を捨てたいですか？</h2>
 <div class="searchline"><input id="query" type="search" placeholder="例：フライパン、段ボール、電池…" aria-label="捨てたいものを入力"><button id="searchBtn">分別方法を調べる</button></div>
-<div class="chips" aria-label="よく検索される品目"><button data-q="プラスチック">プラスチック</button><button data-q="段ボール">段ボール</button><button data-q="フライパン">フライパン</button><button data-q="電池">電池</button><button data-q="布団">布団</button><button data-q="スプレー缶">スプレー缶</button><button data-q="化粧品">化粧品</button><button data-q="ドーラン">ドーラン</button></div>
+<div class="chips" aria-label="よく検索される品目"><button data-q="ケース">ケース</button><button data-q="プラスチック">プラスチック</button><button data-q="段ボール">段ボール</button><button data-q="フライパン">フライパン</button><button data-q="電池">電池</button><button data-q="布団">布団</button><button data-q="スプレー缶">スプレー缶</button><button data-q="化粧品">化粧品</button><button data-q="ドーラン">ドーラン</button></div>
 </section>
 
 <section class="panel" aria-live="polite"><h2>分別結果</h2><div id="results"><div class="empty">品目を入力するか、上のボタンを押してください。</div></div></section>
 
 <section class="panel" id="materialGuide">
 <h2>材質から分別方法を調べる</h2>
-<p class="hint">「プラスチック」「木」「金属」など、材質を入力してください。大きさも選ぶと、分別区分を絞り込めます。</p>
-<div class="searchline"><input id="materialInput" type="search" placeholder="例：プラスチック、木、金属、ゴム…" aria-label="材質を入力"><select id="materialSize" aria-label="大きさ" style="min-width:145px;padding:12px;border:1px solid #cbd4ca;border-radius:11px;background:white;color:var(--ink)"><option value="small" selected>30cm未満</option><option value="large">30cm以上</option><option value="unknown">大きさ不明</option></select><button type="button" id="materialBtn">材質で調べる</button></div>
+<p class="hint">「プラスチック」「木材」「金属」「複合素材（紙＋鉄・アルミなど）」のように材質を入力してください。大きさも選ぶと、分別区分を絞り込めます。</p>
+<div class="searchline"><input id="materialInput" type="search" placeholder="例：木材、紙＋鉄、プラスチック…" aria-label="材質を入力"><select id="materialSize" aria-label="大きさ" style="min-width:145px;padding:12px;border:1px solid #cbd4ca;border-radius:11px;background:white;color:var(--ink)"><option value="small" selected>30cm未満</option><option value="large">30cm以上</option><option value="unknown">大きさ不明</option></select><button type="button" id="materialBtn">材質で調べる</button></div>
 <div id="materialResult" aria-live="polite" style="margin-top:12px"><div class="empty">材質を入力すると、板橋区の分別区分を表示します。</div></div>
 <p class="hint">※材質だけで分別が決まらない品目もあります。汚れ・金属部品・電池・品目固有のルールがある場合は、品目名でも検索してください。</p>
 </section>
@@ -171,6 +171,10 @@ function searchMaterial(){
   kind='粗大ごみ（申込制・有料）';
   how='最大辺がおおむね30cm以上のものは、材質にかかわらず原則として粗大ごみの対象です。';
   caution='家電リサイクル法対象品目、パソコン、電池など例外があります。品目名でも検索してください。';
+ }else if(/複合|\+|＋|混合|紙.*(鉄|金属|アルミ)|(鉄|金属|アルミ).*紙/.test(raw)){
+  kind='複合素材：品目と構造の確認が必要';
+  how='紙と鉄・アルミなど、複数の素材が組み合わさったものは、材質名だけでは分別を確定できません。';
+  caution='素材ごとに分解できる場合は、分解した各部分を材質別に調べてください。分解できない場合は、品目名（例：ケース、筒型ケース）でも検索し、板橋区の公式案内で個別の扱いを確認してください。';
  }else if(/プラスチック|プラ|ポリエチレン|ポリプロピレン|pvc|塩化ビニル/.test(raw)){
   kind='資源（プラスチック）';
   how='プラスチック素材だけでできているものは資源として回収します。容器包装プラスチック・製品プラスチックのどちらも対象です。';
@@ -219,6 +223,7 @@ document.getElementById('materialBtn').addEventListener('click',searchMaterial);
 materialInput.addEventListener('keydown',e=>{if(e.key==='Enter')searchMaterial()});
 
 const items=[
+{name:"ケース（材質・構造を確認）",keys:["ケース","筒型ケース","ボトルケース","収納ケース","ギフトケース","化粧箱","瓶を入れるケース"],type:"材質・構造によって異なります",how:"ケースは、紙・プラスチック・金属・木材など、素材や組み合わさり方によって分別が異なります。「材質から分別方法を調べる」で素材を入力してください。",caution:"紙と金属（鉄・アルミ）などの複合素材は、分解できるかどうかも確認してください。材質だけで判断できない場合は、板橋区公式の分別案内で品目ごとの扱いを確認してください。"},
 {name:"パソコン・ディスプレイ",keys:["パソコン","PC","pc","ノートパソコン","ノートpc","デスクトップパソコン","デスクトップpc","パソコン本体","パソコン用ディスプレイ","pcディスプレイ","モニター","液晶ディスプレイ"],type:"区では回収しません（メーカー回収・宅配便回収）",how:"家庭用パソコン本体・ノートパソコン・ディスプレイは、板橋区では回収していません。①宅配便による回収（リネットジャパンリサイクル）または②各パソコンメーカーによる回収を利用してください。宅配便回収は、パソコン本体を含む1箱分が無料です（3辺合計140cm以内・重量20kg以下）。",caution:'PCリサイクルマークの有無でメーカー回収の料金が異なります。メーカーがない・不明なパソコンや自作パソコンは、一般社団法人パソコン3R推進協会へお問い合わせください。回収前にデータを消去してください。<a href="https://www.city.itabashi.tokyo.jp/tetsuduki/gomi/kaden/1001876.html" target="_blank" rel="noopener">板橋区公式：パソコンリサイクルについて ↗</a>'},
 
 {name:"プラスチック容器・包装",keys:["プラスチック","プラ","菓子袋","レトルト","弁当容器","卵パック","シャンプー","洗剤ボトル"],type:"資源",how:"汚れを拭き取るか軽くすすぎ、中身の見える袋に入れて出します。袋は二重にしません。",caution:"汚れが落ちないものは可燃ごみ、金属や刃物が付いたものは不燃ごみ。紙製のシール・ラベルは可能な範囲ではがすか切り取り、難しければ付けたままで出せます。"},
